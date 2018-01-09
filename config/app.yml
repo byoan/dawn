@@ -1,0 +1,10 @@
+app:
+    app_name: app
+    app_debug: true
+    app_url: http://localhost:8080
+
+db:
+    db_host: localhost
+    db_name: table
+    db_user: user
+    db_password: password
