@@ -1,0 +1,23 @@
+{
+    "name": "dawnelele/dawn",
+    "description": "Micro-Framework Description",
+    "authors": [
+        {
+            "name": "Yoan Ballesteros",
+            "email": "b.yoan@live.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Core\\": "app/Core"
+        }
+    },
+    "require": {
+        "guzzlehttp/psr7": "^1.4",
+        "http-interop/response-sender": "^1.0",
+        "symfony/routing": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    }
+}
