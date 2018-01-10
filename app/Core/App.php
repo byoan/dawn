@@ -15,7 +15,7 @@ class App {
      *
      * @var array
      */
-    private $config;
+    public static $config;
 
     /**
      * Boots the application
@@ -25,7 +25,7 @@ class App {
     public function boot(): void
     {
         $this->loadAppConfig();
-        $this->defineBasePath();
+        $this->defineBasePaths();
     }
 
     /**
@@ -41,7 +41,7 @@ class App {
                 $config = Yaml::parseFile($basePath . '/config/app.yml');
 
                 if (!empty($config)) {
-                    $this->config = $config;
+                    self::$config = $config;
                 }
             } catch (Exception $e) {
                 // Log exception
@@ -54,9 +54,11 @@ class App {
      *
      * @return void
      */
-    private function defineBasePath(): void
+    private function defineBasePaths(): void
     {
-        $this->config['base_path'] = dirname(dirname(__DIR__));
+        self::$config['app']['basePath'] = dirname(dirname(__DIR__));
+        self::$config['twig']['templateDir'] = self::$config['app']['basePath'] . self::$config['twig']['templateDir'];
+        self::$config['twig']['cacheDir'] = self::$config['app']['basePath'] . self::$config['twig']['cacheDir'];
     }
 
     /**
@@ -68,7 +70,7 @@ class App {
     public function handle(Request $request): Response
     {
         // Initiate our router, which will pass the request to the Symfony router
-        $router = new Router($request, $this->config['base_path']);
+        $router = new Router($request, self::$config['app']['basePath']);
         return $router->handle($request);
     }
 
@@ -78,10 +80,10 @@ class App {
      * @param string $value
      * @return void
      */
-    public function config(string $domain, string $key)
+    public static function config(string $domain, string $key)
     {
-        if (isset($this->config[$domain][$key])) {
-            return $this->config[$domain][$key];
+        if (isset(self::$config[$domain][$key])) {
+            return self::$config[$domain][$key];
         } else {
             throw new \Exception('Undefined configuration key');
         }
