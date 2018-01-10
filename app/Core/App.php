@@ -73,16 +73,6 @@ class App {
     }
 
     /**
-     * Sends the received response
-     *
-     * @param ResponseInterface $response
-     * @return void
-     */
-    public function sendResponse(ResponseInterface $response) {
-        \Http\Response\send($response);
-    }
-
-    /**
      * Returns the configuration value for the specified key
      * TODO : replace with a Configuration Provider ? Replace exception with custom one
      * @param string $value
