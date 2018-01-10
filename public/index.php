@@ -1,9 +1,14 @@
 <?php
+use Symfony\Component\HttpFoundation\Request;
 
 // Load Composer's autoload
 require_once '../vendor/autoload.php';
 
-$kernel = new \Core\Kernel();
+$app = new Core\App();
+$app->boot();
 
+$request = Request::createFromGlobals();
+$response = $app->handle($request);
+$response->send();
 
 exit;
