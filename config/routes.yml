@@ -1,0 +1,7 @@
+route1:
+    path: /{slug}/{slug2}
+    defaults: { _controller: Http\Controllers\TestController::homeAction }
+
+route2:
+    path: /
+    controller: Http\Controllers\TestController::testAction

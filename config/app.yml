@@ -1,6 +1,6 @@
 app:
     name: app
-    debug: false
+    debug: true
     url: http://localhost:8080
 
 db:
@@ -8,3 +8,8 @@ db:
     name: table
     user: user
     password: password
+
+twig:
+    templateDir: /resources/views
+    cacheDir: /storage/twig/cache
+    debug: true
