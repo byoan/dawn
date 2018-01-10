@@ -40,7 +40,7 @@ class App {
             try {
                 $config = Yaml::parseFile($basePath . '/config/app.yml');
 
-                if (!empty($configFile)) {
+                if (!empty($config)) {
                     $this->config = $config;
                 }
             } catch (Exception $e) {
