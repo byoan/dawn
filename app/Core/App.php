@@ -56,7 +56,7 @@ class App {
      */
     private function defineBasePath(): void
     {
-        $this->config['path'] = dirname(dirname(__DIR__));
+        $this->config['base_path'] = dirname(dirname(__DIR__));
     }
 
     /**
