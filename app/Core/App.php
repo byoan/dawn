@@ -2,10 +2,11 @@
 
 namespace Core;
 
-use GuzzleHttp\Psr7\Response;
+use Core\Routing\Router;
 use Symfony\Component\Yaml\Yaml;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class App {
 
@@ -61,14 +62,14 @@ class App {
     /**
      * Handles the incoming request and returns the appropriate response
      *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
+     * @param Request $request
+     * @return Response
      */
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function handle(Request $request): Response
     {
-        $response = new Response();
-        $response->getBody()->write('coucou');
-        return $response;
+        // Initiate our router, which will pass the request to the Symfony router
+        $router = new Router($request, $this->config['base_path']);
+        return $router->handle($request);
     }
 
     /**
