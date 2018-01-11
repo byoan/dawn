@@ -10,7 +10,8 @@
     "autoload": {
         "psr-4": {
             "Core\\": "app/Core",
-            "Http\\": "app/Http"
+            "Http\\": "app/Http",
+            "Entities\\": "app/Entities"
         }
     },
     "require": {
