@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Symfony\Component\Yaml\Yaml;
 use Illuminate\Container\Container;
 use Core\Providers\LogServiceProvider;
+use Core\Providers\TwigServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Core\Providers\RoutingServiceProvider;
 use Symfony\Component\Routing\RequestContext;
@@ -14,8 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Core\Providers\YamlFileLoaderServiceProvider;
 
-class App extends Container {
-
+class App extends Container
+{
     /**
      * The application configuration
      *
@@ -116,6 +117,7 @@ class App extends Container {
         $this->register(new LogServiceProvider($this));
         $this->register(new RoutingServiceProvider($this));
         $this->register(new YamlFileLoaderServiceProvider($this));
+        $this->register(new TwigServiceProvider($this));
     }
 
     /**
