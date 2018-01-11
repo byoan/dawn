@@ -1,5 +1,5 @@
 route1:
-    path: /{slug}/{slug2}
+    path: /{slug}/{userId}
     defaults: { _controller: Http\Controllers\TestController::homeAction }
 
 route2:
