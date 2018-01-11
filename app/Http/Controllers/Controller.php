@@ -3,32 +3,17 @@
 namespace Http\Controllers;
 
 use Core\App;
-use Twig\Loader\FilesystemLoader;
-use Twig\Environment as TwigEnvironment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Container\Container;
 
-class Controller {
-
-    protected $twig;
+class Controller
+{
+    protected $container;
 
     public function __construct()
     {
-        $this->twig = $this->initiateTwig();
-    }
-
-    /**
-     * Inits Twig environment using the App configuration
-     *
-     * @return TwigEnvironment
-     */
-    private function initiateTwig(): TwigEnvironment
-    {
-        $loader = new FilesystemLoader(App::config('twig', 'templateDir'));
-        return new TwigEnvironment($loader, array(
-            'cache' => App::config('twig', 'cacheDir'),
-            'debug' => App::config('twig', 'debug')
-        ));
+        $this->container = Container::getInstance();
     }
 
     /**
@@ -42,7 +27,7 @@ class Controller {
     protected function render(string $templateName, array $parameters = array(), Request $request = null): Response
     {
         // Retrieve actual HTML code from Twig
-        $pageContent = $this->twig->render($templateName, $parameters);
+        $pageContent = $this->container->get('twig')->render($templateName, $parameters);
 
         if ($request === null) {
             $response = new Response();
