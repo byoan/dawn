@@ -2,20 +2,17 @@
 
 namespace Core\Routing;
 
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KervelEvents;
 use Symfony\Component\Routing\Router as SfRouter;
-use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Event\FilterControllerArgumentsEvent;
+
+use Illuminate\Container\Container;
 
 class Router implements HttpKernelInterface {
 
@@ -29,20 +26,35 @@ class Router implements HttpKernelInterface {
 
     private $argumentResolver;
 
-    public function __construct(Request $request, string $basePath)
+    private $loader;
+
+    private $container;
+
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+        $this->context = $this->container->get('requestContext');
+
+        $this->resolver = $this->container->get('controllerResolver');
+        $this->argumentResolver = $this->container->get('argumentResolver');
+
+        $this->loader = $this->container->get('yamlFileLoader');
+        $this->loader->load('config/routes.yml');
+    }
+
+    /**
+     * Initiates the Symfony router and some class attributes
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function init(Request $request): void
     {
         $this->request = $request;
-        $this->context = new RequestContext();
         $this->context->fromRequest($this->request);
-        $this->resolver = new ControllerResolver();
-        $this->argumentResolver = new ArgumentResolver();
-
-        $locator = new FileLocator($basePath);
-        $loader = new YamlFileLoader($locator);
-        $loader->load('config/routes.yml');
 
         $this->sfRouter = new SfRouter(
-            $loader,
+            $this->loader,
             'config/routes.yml',
             array(),
             $this->context
@@ -59,6 +71,9 @@ class Router implements HttpKernelInterface {
      */
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
     {
+        // Initiate the Sf Router
+        $this->init($request);
+
         // Create an event from the request
         $event = new GetResponseEvent($this, $request, $type);
 
