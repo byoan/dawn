@@ -1,10 +1,10 @@
 {
-    "name": "dawnelele/dawn",
+    "name": "byoan/dawn",
     "description": "Micro-Framework Description",
     "authors": [
         {
             "name": "Yoan Ballesteros",
-            "email": "b.yoan@live.fr"
+            "email": "blabla@blabla.fr"
         }
     ],
     "autoload": {
